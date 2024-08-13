@@ -90,4 +90,127 @@ function calculate() {
     resultDiv.style.fontSize = '1.5em';
     resultDiv.style.padding = '20px';
     resultDiv.style.borderRadius = '10px';
+    showNotification();
 }
+
+function createProfile() {
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Profil ma'lumotlarini saqlash (masalan, localStorage yoki serverga yuborish)
+    localStorage.setItem('username', username);
+    localStorage.setItem('email', email);
+    localStorage.setItem('password', password);
+
+    // Profil yaratish formasini yashirish
+    document.getElementById('profile-container').style.display = 'none';
+
+    // Profil ma'lumotlarini ko'rsatish
+    const profileDiv = document.createElement('div');
+    profileDiv.className = 'profile';
+    profileDiv.style.backgroundColor = getRandomColor();
+    profileDiv.innerHTML = `Foydalanuvchi: ${username}`;
+    profileDiv.onclick = editProfile;
+    document.body.appendChild(profileDiv);
+
+    // Hisobdan chiqish tugmasini qo'shish
+    const logoutButton = document.createElement('button');
+    logoutButton.innerHTML = 'Hisobdan chiqish';
+    logoutButton.onclick = logout;
+    document.body.appendChild(logoutButton);
+
+    alert('Profil muvaffaqiyatli yaratildi!');
+}
+
+function editProfile() {
+    const username = localStorage.getItem('username');
+    const email = localStorage.getItem('email');
+    const password = localStorage.getItem('password');
+
+    document.getElementById('edit-username').value = username;
+    document.getElementById('edit-email').value = email;
+    document.getElementById('edit-password').value = password;
+
+    document.getElementById('edit-profile-container').style.display = 'block';
+}
+
+function saveProfile() {
+    const username = document.getElementById('edit-username').value;
+    const email = document.getElementById('edit-email').value;
+    const password = document.getElementById('edit-password').value;
+
+    localStorage.setItem('username', username);
+    localStorage.setItem('email', email);
+    localStorage.setItem('password', password);
+
+    document.querySelector('.profile').innerHTML = `Foydalanuvchi: ${username}`;
+    document.getElementById('edit-profile-container').style.display = 'none';
+
+    alert('Profil muvaffaqiyatli tahrirlandi!');
+}
+
+function logout() {
+    localStorage.removeItem('username');
+    localStorage.removeItem('email');
+    localStorage.removeItem('password');
+    location.reload();
+}
+
+function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function showNotification() {
+    if (Notification.permission === 'granted') {
+        new Notification('Mashg\'ulot tugadi!', {
+            body: 'Siz mashg\'ulotni muvaffaqiyatli tugatdingiz!',
+            icon: 'icon.png'
+        });
+    } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+                showNotification();
+            }
+        });
+    }
+}
+
+// Sahifa yangilanganida profil ma'lumotlarini yuklash
+window.onload = function() {
+    const username = localStorage.getItem('username');
+    if (username) {
+        const profileDiv = document.createElement('div');
+        profileDiv.className = 'profile';
+        profileDiv.style.backgroundColor = getRandomColor();
+        profileDiv.innerHTML = `Foydalanuvchi: ${username}`;
+        profileDiv.onclick = editProfile;
+        document.body.appendChild(profileDiv);
+
+        // Hisobdan chiqish tugmasini qo'shish
+        const logoutButton = document.createElement('button');
+        logoutButton.innerHTML = 'Hisobdan chiqish';
+        logoutButton.onclick = logout;
+        document.body.appendChild(logoutButton);
+    } else {
+        // Profilga kirish va ro'yxatdan o'tish tugmalarini qo'shish
+        const loginButton = document.createElement('button');
+        loginButton.innerHTML = 'Profilga kirish';
+        loginButton.onclick = function() {
+            document.getElementById('profile-container').style.display = 'block';
+        };
+        document.body.appendChild(loginButton);
+
+        const registerButton = document.createElement('button');
+        registerButton.innerHTML = 'Ro\'yxatdan o\'tish';
+        registerButton.onclick = function() {
+            document.getElementById('profile-container').style.display = 'block';
+        };
+        document.body.appendChild(registerButton);
+    }
+};
