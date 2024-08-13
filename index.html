@@ -18,7 +18,7 @@
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        h1 {
+        h1, h2 {
             text-align: center;
             color: #333;
         }
@@ -54,12 +54,45 @@
             text-align: center;
             font-size: 1.2em;
         }
+        .dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+        .dark-mode label, .dark-mode h1, .dark-mode h2 {
+            color: #fff;
+        }
+        .profile {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .dark-mode .profile {
+            color: #000;
+        }
+        .dark-mode-toggle {
+            position: fixed;
+            top: 10px;
+            right: 80px;
+            padding: 5px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .dark-mode .dark-mode-toggle {
+            background-color: #fff;
+            color: #000;
+        }
         @media (max-width: 600px) {
             .container {
                 margin: 20px;
                 padding: 15px;
             }
-            h1 {
+            h1, h2 {
                 font-size: 1.5em;
             }
             input, select, button {
@@ -109,6 +142,28 @@
         <button onclick="calculate()">Hisoblash</button>
         <div class="result" id="result"></div>
     </div>
+    <div class="container" id="profile-container">
+        <h2>Profil Yaratish</h2>
+        <label for="username">Foydalanuvchi nomi:</label>
+        <input type="text" id="username">
+        <label for="email">Email:</label>
+        <input type="email" id="email">
+        <label for="password">Parol:</label>
+        <input type="password" id="password">
+        <button onclick="createProfile()">Profil Yaratish</button>
+    </div>
+    <div class="container" id="edit-profile-container" style="display: none;">
+        <h2>Profilni Tahrirlash</h2>
+        <label for="edit-username">Foydalanuvchi nomi:</label>
+        <input type="text" id="edit-username">
+        <label for="edit-email">Email:</label>
+        <input type="email" id="edit-email">
+        <label for="edit-password">Parol:</label>
+        <input type="password" id="edit-password">
+        <button onclick="saveProfile()">Saqlash</button>
+    </div>
+    <canvas id="myChart" width="300" height="150"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
